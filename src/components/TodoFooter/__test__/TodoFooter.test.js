@@ -2,6 +2,8 @@ import { render, screen } from '@testing-library/react';
 import TodoFooter from "../TodoFooter"
 import { BrowserRouter } from "react-router-dom"
 
+//when there is a link or other stuffs from react router, i need to wrap the 
+//component with browser router before to render it( dont forget to return it)
 const MockTodoFooter = ({ numberOfIncompleteTasks }) => {
     return (
         <BrowserRouter>
@@ -12,6 +14,8 @@ const MockTodoFooter = ({ numberOfIncompleteTasks }) => {
     )
 }
 
+
+//possibility tohave severals blocs of test with describe
 describe("TodoFooter", () => {
   it('should render the correct amount of incomplete tasks', () => {
     render(

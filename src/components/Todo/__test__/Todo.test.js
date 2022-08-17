@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Todo from "../Todo"
 import { BrowserRouter } from "react-router-dom"
 
+//using this variable here because Todo -> TodoList -> TodoFooter -> Link
 const MockTodo = () => {
     return (
         <BrowserRouter>
@@ -9,6 +10,7 @@ const MockTodo = () => {
         </BrowserRouter>
     )
 }
+
 
 const addTask = (tasks) => {
     const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);

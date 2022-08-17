@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+//fireEvent allow to trigger an event
 import AddInput from "../AddInput"
 
 const mockedSetTodo = jest.fn();
@@ -9,6 +10,8 @@ describe("AddInput", () => {
             <AddInput 
                 todos={[]}
                 setTodos={mockedSetTodo}
+                // = setTodos = { () => {}}
+                //but is better to use a jest.fn to identify a function
             />
         );
         const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
@@ -23,7 +26,9 @@ describe("AddInput", () => {
             />
         );
         const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        //fireEvent handle events
         fireEvent.click(inputElement)
+        //if i change the value of (1params) inputElement, to (2params) value:"Go Grocery Shopping"
         fireEvent.change(inputElement, { target: { value: "Go Grocery Shopping" } })
         expect(inputElement.value).toBe("Go Grocery Shopping");
     });

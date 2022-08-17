@@ -23,6 +23,8 @@ describe("Header", () => {
 //     expect(h1Element).toBeInTheDocument();
 // });
 
+//in case there is two headers ( in these exemple one h1 and one  h3), i can add
+//an identifier ex: { name : /todo/i } with getByRole("heading")
 // it('should render same text passed into title prop', () => {
 //     render(
 //         <Header 
@@ -33,6 +35,8 @@ describe("Header", () => {
 //     expect(h1Element).toBeInTheDocument();
 // });
 
+//i can target directly with title
+//<h1 title="Header" className="header">{title}</h1>
 // it('should render same text passed into title prop', () => {
 //     render(
 //         <Header 
@@ -43,6 +47,8 @@ describe("Header", () => {
 //     expect(h1Element).toBeInTheDocument();
 // });
 
+//or with data-testid="header-2"
+//<h3 data-testid="header-2" className="header">Hello</h3>
 // it('should render same text passed into title prop', () => {
 //     render(
 //         <Header 
@@ -54,7 +60,7 @@ describe("Header", () => {
 // });
 
 // // WITH FINDBY
-
+//dont forget to use it with async and await
 // it('should render same text passed into title prop', async () => {
 //     render(
 //         <Header 

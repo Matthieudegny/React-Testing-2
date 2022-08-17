@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+what define a test block:\
+-render a componentt we want to test => 1\
+-find elements we want to interact with => 2\
+-interact with those elements => 3\
+-assert that the results are as expected => 4
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+    it('should fetch and render input element', async () => {
+        //1
+            render(
+                <MockFollowersList />
+            );
+        //2
+            const followerDivElement = await screen.findByTestId(`follower-item-0`)
+        //3 + 4
+            expect(followerDivElement).toBeInTheDocument();
+        });
 
-## Available Scripts
+screen is the way to interact with the component that we called (render)
 
-In the project directory, you can run:
+     const followerDivElement = await screen.findByTestId(`follower-item-0`)
 
-### `yarn start`
+differents way to interact with screen. =>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<p align="center">
+  <kbd>
+    <img src="./public/getTest.png"></img>
+  </kbd>
+</p>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+remember for async => findBy or findAllBy
 
-### `yarn test`
+integration test:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-possibility to use some loops (JS code)
 
-### `yarn build`
+    const addTask = (tasks) => {
+        const inputElement = screen.getByPlaceholderText(/Add a new task here.../i);
+        const buttonElement = screen.getByRole("button", { name: /Add/i} );
+        tasks.forEach((task) => {
+            fireEvent.change(inputElement, { target: { value: task } });
+            fireEvent.click(buttonElement);
+        })
+    }
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    it('should be able to type into input', () => {
+    render(
+        <MockTodo />
+    );
+    addTask(["Go Grocery Shopping"])
+    const divElement = screen.getByText(/Go Grocery Shopping/i);
+    expect(divElement).toBeInTheDocument()
+    });
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+-use the getElementId for testing is :
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    <div className="follower-item" data-testid={`follower-item-${index}`}>
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    it('should fetch and render input element', async () => {
+        render(
+            <MockFollowersList />
+        );
+        const followerDivElement = await screen.findByTestId(`follower-item-0`)
+        expect(followerDivElement).toBeInTheDocument();
+    });
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+it would be screengetByTestId("follower-item-0") if not async
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+-why we use mocks to simulate API, requests cost money, requests are slow,
+our tests dependent on something external
+-to do that, create a __mocks__ folder\
+-inside the axios.js file:\
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+i create the object (in relation with what is expected in the request ):
 
-## Learn More
+    const mockResponse = {
+        data: {
+            results: [
+                {
+                    name: {
+                        first: "Laith",
+                        last: "Harb"
+                    },
+                    picture: {
+                        large: "https://randomuser.me/api/portraits/men/59.jpg"
+                    },
+                    login: {
+                        username: "ThePhonyGOAT"
+                    }
+                }
+            ]
+        }
+    }
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+and export it with jest method:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+    export default {
+        get: jest.fn().mockResolvedValue(mockResponse)
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+if need it, set-up createJestConfig.js file in react scripts
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    resetMocks: false
